@@ -1,0 +1,37 @@
+sudo apt install autoconf 
+sudo apt install libtool
+sudo apt install libtool-bin
+
+然后从git上获取libunwind，并编译安装
+
+git clone https://github.com/libunwind/libunwind.git
+cd libunwind
+sh ./autogen.sh 
+./configure 
+make
+sudo make install
+
+现在可以编译安装gperftools了
+
+git clone https://github.com/gperftools/gperftools.git
+sh autogen.sh 
+./configure 
+make
+sudo make install
+
+
+apt install google-perftools libgoogle-perftools-dev libunwind-dev
+apt install kcachegrind
+
+
+/usr/bin/g++-7 -std=c++17 leak.cc -ltcmalloc -g -o leak
+LD_PRELOAD="/usr/local/lib/libtcmalloc.so" HEAPCHECK=normal /home/fangliang/gperftools_test/heap_checker/leak not link to tcmalloc
+HEAPCHECK=normal ./leak
+
+
+./hash_table&
+pprof --gif ./hash_table profiler > profiler.gif
+pprof leak "/tmp/leak.3384._main_-end.heap" --inuse_objects --lines --heapcheck  --edgefraction=1e-10 --nodefraction=1e-10 --gv
+
+apt install valgrind
+valgrind --leak-check=yes ./leak
